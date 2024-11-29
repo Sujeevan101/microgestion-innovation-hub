@@ -36,11 +36,13 @@ This repository provides configuration files and guidance for setting up IBM App
 1. Pull the base IBM MQ image:
 ```bash
 docker image pull icr.io/ibm-messaging/mq:9.4.1.0-r1
+--docker pull --platform=linux/amd64 icr.io/ibm-messaging/mq:9.4.1.0-r1
 ```
 
 2. Move to the directory mq_image, next build the custom MQ image:
 ```bash
 docker build -t mq4ace .
+docker buildx build -t mq4ace .
 ```
 
 3. Create and start the MQ container:
@@ -59,6 +61,25 @@ docker run \
 --detach \
 mq4ace
 ```
+docker run \
+--platform linux/amd64 \
+--env LICENSE=accept \
+--env MQ_QMGR_NAME=QM.MacOS.Local.IS \
+--env MQ_APP_USER=app \
+--env MQ_APP_PASSWORD=ace13lpmqlp \
+--env MQ_ADMIN_USER=admin \
+--env MQ_ADMIN_PASSWORD=ace13lpmqlp \
+--volume qm-macos-local-is-vol:/mnt/mqm \
+--publish 1414:1414 \
+--publish 1415:1415 \
+--publish 9443:9443 \
+--name QM.MacOS.Local.IS \
+--detach \
+icr.io/ibm-messaging/mq:9.4.1.0-r1
+
+echo 'ace13lpmqlp' | docker secret create MQ_ADMIN_PASSWORD
+echo 'admin' | docker secret create MQ_ADMIN_USER
+
 
 ### 2. ACE Toolkit Configuration
 
