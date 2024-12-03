@@ -71,7 +71,6 @@ docker run \
 --env MQ_ADMIN_PASSWORD=ace13lpmqlp \
 --volume qm-macos-local-is-vol:/mnt/mqm \
 --publish 1414:1414 \
---publish 1415:1415 \
 --publish 9443:9443 \
 --name QM.MacOS.Local.IS \
 --detach \
